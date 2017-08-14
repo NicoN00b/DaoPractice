@@ -50,7 +50,8 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
         //get: show an individual task that is nested in a category
-        get("/categories/:category_id/tasks/:task_id", (req, res) -> {
+        //categories/:category_id/tasks/:task_id"
+        get("/categories/tasks/:task_id", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             int idOfTaskToFind = Integer.parseInt(req.params("task_id"));
             Task foundTask = taskDao.findById(idOfTaskToFind);
