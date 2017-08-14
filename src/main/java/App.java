@@ -60,7 +60,7 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
         //get: show a form to update a task
-        get("/tasks/update", (req, res) -> {
+        get("/tasks/:task_id/update", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             int idOfTaskToEdit = Integer.parseInt(req.params("id"));
             Task editTask = taskDao.findById(idOfTaskToEdit);
@@ -69,7 +69,7 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
         //post: process a form to update a task
-        post("/tasks/update", (req, res) -> {
+        post("/tasks/:task_id/update", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             String newContent = req.queryParams("description");
             int idOfTaskToEdit = Integer.parseInt(req.queryParams("id"));
@@ -79,7 +79,8 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
         //get: delete an individual task
-        get("categories/:category_id/tasks/:task_id/delete", (req, res) -> {
+        //"categories/:category_id/tasks/:task_id/delete",
+        get("categories/tasks/:task_id/delete", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             int idOfTaskToDelete = Integer.parseInt(req.params("task_id"));
             Task deleteTask = taskDao.findById(idOfTaskToDelete);
