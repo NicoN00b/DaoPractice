@@ -26,6 +26,13 @@ public class App {
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
+        get("/tasks", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Task> tasks = taskDao.getAll();
+            model.put("tasks", tasks);
+            return new ModelAndView(model, "index.hbs");
+        }, new HandlebarsTemplateEngine());
+
         //get: delete all tasks
         get("/tasks/delete", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
@@ -51,7 +58,7 @@ public class App {
 
         //get: show an individual task that is nested in a category
         //categories/:category_id/tasks/:task_id"
-        get("/categories/tasks/:task_id", (req, res) -> {
+        get("/tasks/:task_id", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             int idOfTaskToFind = Integer.parseInt(req.params("task_id"));
             Task foundTask = taskDao.findById(idOfTaskToFind);
@@ -62,7 +69,7 @@ public class App {
         //get: show a form to update a task
         get("/tasks/:task_id/update", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            int idOfTaskToEdit = Integer.parseInt(req.params("id"));
+            int idOfTaskToEdit = Integer.parseInt(req.params("task_id"));
             Task editTask = taskDao.findById(idOfTaskToEdit);
             model.put("editTask", editTask);
             return new ModelAndView(model, "task-form.hbs");
@@ -71,8 +78,8 @@ public class App {
         //post: process a form to update a task
         post("/tasks/:task_id/update", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            String newContent = req.queryParams("description");
-            int idOfTaskToEdit = Integer.parseInt(req.queryParams("id"));
+            String newContent = req.queryParams("task_id");
+            int idOfTaskToEdit = Integer.parseInt(req.queryParams("description"));
             Task editTask = taskDao.findById(idOfTaskToEdit);
             taskDao.update(idOfTaskToEdit, newContent, 1); //ignore the hardcoded categoryId for now.
             return new ModelAndView(model, "success.hbs");
@@ -80,7 +87,7 @@ public class App {
 
         //get: delete an individual task
         //"categories/:category_id/tasks/:task_id/delete",
-        get("categories/tasks/:task_id/delete", (req, res) -> {
+        get("tasks/:task_id/delete", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
             int idOfTaskToDelete = Integer.parseInt(req.params("task_id"));
             Task deleteTask = taskDao.findById(idOfTaskToDelete);
