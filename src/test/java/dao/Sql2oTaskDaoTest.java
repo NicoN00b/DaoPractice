@@ -33,7 +33,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void addingCourseSetsId() throws Exception {
-        Task task = new Task("mow the lawn",1);
+        Task task = setupNewTask();
         int originalTaskId = task.getId();
         taskDao.add(task);
         assertNotEquals(originalTaskId, task.getId()); //how does this work?
@@ -41,7 +41,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void existingTasksCanBeFoundById() throws Exception {
-        Task task = new Task("mow the lawn", 1);
+        Task task = setupNewTask();
         taskDao.add(task); //add to dao (takes care of saving)
         Task foundTask = taskDao.findById(task.getId()); //retrieve
         assertEquals(task, foundTask); //should be the same
@@ -49,7 +49,7 @@ public class Sql2oTaskDaoTest {
 
     @Test
     public void addedTasksAreReturnedFromgetAll() throws Exception {
-        Task task = new Task("mow the lawn", 1);
+        Task task = setupNewTask();
         taskDao.add(task);
         assertEquals(1, taskDao.getAll().size());
     }
@@ -58,7 +58,6 @@ public class Sql2oTaskDaoTest {
     public void noTasksReturnsEmptyList() throws Exception {
         assertEquals(0, taskDao.getAll().size());
     }
-
     @Test
     public void updateChangesTaskContent() throws Exception {
         String initialDescription = "mow the lawn";
@@ -69,7 +68,6 @@ public class Sql2oTaskDaoTest {
         Task updatedTask = taskDao.findById(task.getId()); //why do I need to refind this?
         assertNotEquals(initialDescription, updatedTask.getDescription());
     }
-
 
     @Test
     public void deleteByIdDeletesCorrectTask() throws Exception {
@@ -82,7 +80,7 @@ public class Sql2oTaskDaoTest {
     @Test
     public void clearAllClearsAll() throws Exception {
         Task task = setupNewTask();
-        Task otherTask = new Task("brush the cat", 1);
+        Task otherTask = new Task("brush the cat",1);
         taskDao.add(task);
         taskDao.add(otherTask);
         int daoSize = taskDao.getAll().size();
@@ -100,7 +98,7 @@ public class Sql2oTaskDaoTest {
 
 
     public Task setupNewTask(){
-        return new Task("mow the lawn", 1);
+        return new Task("mow the lawn",1);
     }
 
 }

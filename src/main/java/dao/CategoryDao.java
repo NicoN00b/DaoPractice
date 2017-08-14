@@ -5,10 +5,8 @@ import models.Task;
 
 import java.util.List;
 
-/**
- * Created by Guest on 8/14/17.
- */
 public interface CategoryDao {
+
     //create
     void add (Category category);
 

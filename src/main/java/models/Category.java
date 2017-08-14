@@ -1,11 +1,13 @@
 package models;
 
-/**
- * Created by Guest on 8/14/17.
- */
 public class Category {
+
     private String name;
     private int id;
+
+    public Category(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;
@@ -22,7 +24,6 @@ public class Category {
     public void setId(int id) {
         this.id = id;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -42,6 +43,3 @@ public class Category {
         return result;
     }
 }
-
-
-

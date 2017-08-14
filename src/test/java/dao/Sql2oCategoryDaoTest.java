@@ -66,7 +66,7 @@ public class Sql2oCategoryDaoTest {
     @Test
     public void updateChangesCategoryContent() throws Exception {
         String initialDescription = "Yardwork";
-        Category category = new Category ();
+        Category category = new Category (initialDescription);
         categoryDao.add(category);
 
         categoryDao.update(category.getId(),"Cleaning");
@@ -85,7 +85,7 @@ public class Sql2oCategoryDaoTest {
     @Test
     public void clearAllClearsAll() throws Exception {
         Category category = setupNewCategory();
-        Category otherCategory = new Category();
+        Category otherCategory = new Category("Cleaning");
         categoryDao.add(category);
         categoryDao.add(otherCategory);
         int daoSize = categoryDao.getAll().size();
@@ -112,6 +112,6 @@ public class Sql2oCategoryDaoTest {
     }
 
     public Category setupNewCategory(){
-        return new Category();
+        return new Category("Yardwork");
     }
 }
