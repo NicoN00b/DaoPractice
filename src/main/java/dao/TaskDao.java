@@ -4,6 +4,9 @@ import models.Task;
 
 import java.util.List;
 
+//
+//    void clearAllTasks();
+//
 /**
  * Created by epicodus_staff on 7/18/17.
  */
@@ -15,11 +18,9 @@ public interface TaskDao {
     List<Task> getAll();
 
     Task findById(int id);
-    //update
-    //  void update(int id, String content);
-    //delete
-//   void deleteTask();
 
-//   void clearAllTasks();
+    void update(int id, String content, int categoryId);
+    void deleteById(int id);
+    void clearAllTasks();
 
 }

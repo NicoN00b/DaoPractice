@@ -5,7 +5,7 @@ import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
 
-
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -21,10 +21,15 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
 
     @Override
     public void add(Task task) {
-        String sql = "INSERT INTO tasks (description) VALUES (:description)"; //raw sql
+
+        String sql = "INSERT INTO tasks (description, categoryId) VALUES (:description, :categoryId)"; //raw sql
         try(Connection con = sql2o.open()){ //try to open a connection
             int id = (int) con.createQuery(sql) //make a new variable
-                    .bind(task) //map my argument onto the query so we can use information from it
+                    .addParameter("description", task.getDescription())
+                    .addParameter("categoryId", task.getCategoryId())
+                    .addColumnMapping("DESCRIPTION", "description")
+                    .addColumnMapping("CATEGORYID", "categoryId")
+                    .addColumnMapping("CREATEDAT", "createdAt")
                     .executeUpdate() //run it all
                     .getKey(); //int id is now the row number (row “key”) of db
             task.setId(id); //update object to set id now from database
@@ -32,6 +37,7 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
             System.out.println(ex); //oops we have an error!
         }
     }
+
 
     @Override
     public List<Task> getAll() {
@@ -49,4 +55,42 @@ public class Sql2oTaskDao implements TaskDao { //implementing our interface
                     .executeAndFetchFirst(Task.class); //fetch an individual item
         }
     }
+
+    @Override
+    public void update(int id, String newDescription, int newCategoryId){
+        String sql = "UPDATE tasks SET (description, categoryId) = (:description, :categoryId) WHERE id=:id"; //raw sql
+        try(Connection con = sql2o.open()){
+            con.createQuery(sql)
+                    .addParameter("description", newDescription)
+                    .addParameter("categoryId", newCategoryId)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    @Override
+    public void deleteById(int id) {
+        String sql = "DELETE from tasks WHERE id=:id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+    }
+
+    @Override
+    public void clearAllTasks() {
+        String sql = "DELETE from tasks";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql).executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println(ex);
+        }
+    }
+
+
 }

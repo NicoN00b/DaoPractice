@@ -78,7 +78,7 @@ public class App {
 //            Map<String, Object> model = new HashMap<>();
 //            int idOfTaskToDelete = Integer.parseInt(req.params("id")); //pull id - must match route segment
 //            Task deleteTask = Task.findById(idOfTaskToDelete); //use it to find task
-//            deleteTask.deleteTask();
+//            deleteTask.deleteById();
 //            return new ModelAndView(model, "success.hbs");
 //        }, new HandlebarsTemplateEngine());
 //
